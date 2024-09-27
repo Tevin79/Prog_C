@@ -1,0 +1,19 @@
+Certains codes sont fournis avec un Makefile :
+- pour créer tous les exécutables :
+    $ make
+- pour créer un exécutable particulier :
+    $ make <nom exécutable>
+- pour compiler un seul .c et générer le .o correspondant. Par exemple pour
+  compiler le fichier toto.c :
+    $ make toto.o
+  C'est bien toto.o qu'on désigne : on indique ce qu'on veut fabriquer.
+- pour effacer tous les fichiers temporaires/intermédiaires (les .o notamment) :
+    $ make clean
+- pour effacer en plus les exécutables :
+    $ make distclean
+
+Sinon on rappelle les options obligatoires de compilation :
+    -Wall -Wextra -pedantic -std=c99'
+Et aucune erreur et aucun warning ne doit apparaître.
+Il faut rajouter l'option "-g" si on utilise un débugger classique
+ou mémoire.
