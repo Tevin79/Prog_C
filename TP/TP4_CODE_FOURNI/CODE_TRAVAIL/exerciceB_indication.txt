@@ -1,0 +1,11 @@
+La décomposition de 1952540739 en hexa est : 74 61 68 43
+          i.e. : 0x74 * 256^2 + 0x61 * 256^2 + 0x68 * 256^1 + 0x43 * 256^0
+          Si on considère ces 4 nombres comme des codes ASCII : ... (man 7 ascii) :
+                0x74 : '?'
+                0x61 : '?'
+                0x68 : '?'
+                0x43 : '?'
+          Et rapelez-vous que les machines sont en little endian
+
+La décomposition de 1130914164 en hexa est : 43 68 61 74
+idem : les nombres hexas sont dans l'autre sens

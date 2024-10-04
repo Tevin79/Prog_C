@@ -1,0 +1,222 @@
+Le fichier est en deux parties :
+- les questions
+- la correction
+
+Encore plus qu'ailleurs, le but est de comprendre et non pas d'exécuter
+les instructions mécaniquement.
+N'hésitez pas à faire des variations dans le programme ou les commandes pour
+vérifier votre compréhension.
+
+
+##############################################################################
+# Manipulations à faire
+# corrections en fin de fichier
+##############################################################################
+
+------------------------------------------------------------------------------
+- question 1
+------------------------------------------------------------------------------
+1) Génération des 4 fichiers :
+- "binaire_123"
+- "binaire_1234567890"
+- "texte_123"
+- "texte_1234567890"
+
+Le programme est fourni :
+$ gcc -g -Wall -Wextra -pedantic -std=c99 -o write_int write_int.c
+$ ls -lG write_int.c write_int
+-rwxr-xr-x 1 subrenat 19480 sept. 22 14:48 write_int
+-rw-r--r-- 1 subrenat   648 sept. 22 14:41 write_int.c
+
+Note : ce n'est pas le propos de cet exercice, mais vous pouvez regarder
+       le code source
+
+Il suffit de l'exécuter :
+$ ./write_int 
+$ ls -lG binaire_123 texte_123 binaire_1234567890 texte_1234567890 
+-rw-r--r-- 1 subrenat  4 sept. 22 14:57 binaire_123
+-rw-r--r-- 1 subrenat  3 sept. 22 14:57 texte_123
+-rw-r--r-- 1 subrenat  4 sept. 22 14:57 binaire_1234567890
+-rw-r--r-- 1 subrenat 10 sept. 22 14:57 texte_1234567890
+
+Note : les tailles des fichiers sont précisées en 4me colonne
+
+
+------------------------------------------------------------------------------
+- question 2
+------------------------------------------------------------------------------
+2) fichier "binaire_123"
+
+Quelle est sa taille ?
+4
+Quel est le résultat de l'instruction : sizeof(int) en C ?
+4
+
+Quels sont les valeurs numériques de chaque octet ?
+Est-on en "little endian" ou "big endian" (cf. explications dans le support
+de tp) ?
+A quel caractère ASCII correspond chaque octet ?
+Utilisez la commande :
+$ od -Ad -w10 -t u1z binaire_123
+0000000   123   0   0   0
+0000004
+
+
+------------------------------------------------------------------------------
+- question 3
+------------------------------------------------------------------------------
+3) fichier "texte_123"
+
+Quelle est sa taille ?
+3 octets
+Est-ce normal (on dit pourtant qu'un entier est codé sur 4 octets) ?
+en ascii un octet par chiffre compare a en binaire
+
+Quel est la valeur de chaque octet ?
+A quel caractère ASCII correspond chaque octet ?
+Utilisez la commande :
+$ od -Ad -w10 -t u1z texte_123
+0000000    49  50  51
+0000003
+
+
+------------------------------------------------------------------------------
+- question 4
+------------------------------------------------------------------------------
+4) fichier "binaire_1234567890"
+
+Mêmes questions que pour l'exercice 2.
+Comment retrouve-t-on la valeur de l'entier à partir des valeurs
+des octets ?
+
+
+------------------------------------------------------------------------------
+- question 5
+------------------------------------------------------------------------------
+5) fichier "texte_1234567890"
+
+Mêmes questions que pour l'exercice 3.
+
+
+
+##############################################################################
+# Corrections
+##############################################################################
+
+------------------------------------------------------------------------------
+- question 1
+------------------------------------------------------------------------------
+1) Génération des 4 fichiers
+
+Pas de correction, il y avait juste à exécuter la commande de création
+
+
+------------------------------------------------------------------------------
+- question 2
+------------------------------------------------------------------------------
+2) fichier "binaire_123"
+
+Quelle est sa taille ?
+Quel est le résultat de l'instruction : sizeof(int) en C ?
+
+"sizeof(int)" indique la taille mémoire qu'occupe une variable de type "int"
+en mémoire (4 sur ma machine). Rappelons qu'un "int" est stocké en binaire,
+i.e. sur 32 bits.
+Le fichier fait 4 octets : c'est l'image mémoire copiée sur disque.
+
+Quels sont les valeurs numériques de chaque octet ?
+Est-on en "little endian" ou "big endian" (cf. explications dans le support
+de tp) ?
+A quel caractère ASCII correspond chaque octet ?
+
+$ od -Ad -w10 -t u1z binaire_123
+0000000 123   0   0   0                          >{...<
+0000004
+
+Les valeurs (en base 10) sont dans l'ordre : 123, 0, 0 et enfin 0
+L'octet de poids faible est en premier (les octets sont "à l'envers"), on est
+donc en little endian.
+
+Il n'y a aucun intérêt à se demander quels sont les caractères ASCII
+correspondants car il ne faut pas interpréter les valeurs ainsi.
+(sinon il s'agit des caractères '{", '\0' (NUL), '\0' (NUL)et '\0' (NUL))
+
+
+------------------------------------------------------------------------------
+- question 3
+------------------------------------------------------------------------------
+3) fichier "texte_123"
+
+Quelle est sa taille ?
+Est-ce normal (on dit pourtant qu'un entier est codé sur 4 octets) ?
+
+La taille est 3 octets.
+Les 4 octets sont la taille en mémoire d'un int, en binaire donc. Ici on
+est en ASCII, soit un octet par chiffre.
+
+Quel est la valeur de chaque octet ?
+A quel caractère ASCII correspond chaque octet ?
+
+$ od -Ad -w10 -t u1z texte_123
+0000000  49  50  51                              >123<
+0000003
+
+Les valeurs (en base 10) sont dans l'ordre : 49, 50 et enfin 51.
+Les 3 valeurs correspondent aux caractères '1', '2' et '3', ce qui était le
+but.
+Du point de vue de la machine, la valeur 123 est perdue, elle ne voit qu'une
+série de 3 caractères sans lien entre eux (il faudra faire un fscanf pour
+reconstruire cette valeur).
+
+
+------------------------------------------------------------------------------
+- question 4
+------------------------------------------------------------------------------
+4) fichier "binaire_1234567890"
+
+Mêmes questions que pour l'exercice 2.
+
+... et mêmes réponses !
+
+ od -Ad -w10 -t u1z binaire_1234567890 
+0000000 210   2 150  73                          >...I<
+0000004
+
+L'entier est toujours codé sur 4 octets en binaire (c'est pourquoi il
+peut y avoir des débordements).
+Encore une fois les caractères ASCII correspondants n'ont aucune signification,
+c'est un hasard si le 4me ('I') est imprimable.
+
+Comment retrouve-t-on la valeur de l'entier à partir des valeurs
+des octets ?
+
+Les valeur sont (en base 10) 210, 2, 150 et 73. Et nous sommes en little
+endian, "à l'envers" donc.
+La formule est donc : 
+73*256^3 + 150*256^2 + 2*256^1 + 210*256^0
+soit : 
+$ bc
+73*256^3 + 150*256^2 + 2*256^1 + 210*256^0
+1234567890
+^D
+$
+Ce qui est plutôt rassurant.
+
+
+------------------------------------------------------------------------------
+- question 5
+------------------------------------------------------------------------------
+5) fichier "texte_1234567890"
+
+Mêmes questions que pour l'exercice 3.
+
+... et mêmes réponses.
+
+Comme il y a 10 chiffres, le fichier contient 10 octets, un par chiffre.
+
+$ od -Ad -w10 -t u1z texte_1234567890
+0000000  49  50  51  52  53  54  55  56  57  48  >1234567890<
+0000010
+
+Les valeurs (en base 10) sont dans l'ordre : 49, 50 ..., 57 et enfin 48.
+Les 10 valeurs correspondent aux caractères '1', '2' ..., '9' et '0'.
